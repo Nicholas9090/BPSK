@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jan 15 16:51:53 2021
+
+@author: nikolaoslazidis
+"""
+
+#imported libraries
+
+import numpy as np
+from PIL import Image
+from matplotlib import pyplot as plt
+from scipy import fft
+from scipy import signal
+
+def bin_array(num, m):
+    """Convert a positive integer num into an m-bit bit vector"""
+    return np.array(list(np.binary_repr(num).zfill(m))).astype(np.bool)
+
+# import 24 bit digital data
+
+id_num = 2616171
+Nbits = 24
+tx_bin = bin_array(id_num, Nbits)
+
+# constants and variables
+
+fc = 0.125
+bit_len = 16
+tx_mod = np.empty (0)
+t = 0
+
+
+#BPSK
+for i in range(0, Nbits):
+    for j in range(0, bit_len):
+        tx_bin = -1
+        tx_mod = tx_bin *np.cos(2*np.pi*fc*(i*bit_len+j))
+        t += 1
+
+            
+plt.figure()
+plt.plot(tx_mod)
+plt.show()            
+plt.figure()
+plt.plot(np.abs(fft.fft(tx_mod)))
+plt.show()
